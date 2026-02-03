@@ -33,7 +33,7 @@ export function Dropdown({
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
       <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
       <AnimatePresence>
         {isOpen && (
