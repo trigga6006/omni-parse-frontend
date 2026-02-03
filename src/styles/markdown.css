@@ -1,0 +1,101 @@
+/* Additional markdown styles for code syntax highlighting */
+.markdown-content pre {
+  position: relative;
+}
+
+.markdown-content pre code {
+  display: block;
+  padding: 0;
+  overflow-x: auto;
+}
+
+/* Syntax highlighting placeholder classes */
+.markdown-content .token.comment,
+.markdown-content .token.prolog,
+.markdown-content .token.doctype,
+.markdown-content .token.cdata {
+  color: hsl(var(--muted-foreground));
+}
+
+.markdown-content .token.punctuation {
+  color: hsl(var(--foreground));
+}
+
+.markdown-content .token.property,
+.markdown-content .token.tag,
+.markdown-content .token.boolean,
+.markdown-content .token.number,
+.markdown-content .token.constant,
+.markdown-content .token.symbol {
+  color: #e36209;
+}
+
+.markdown-content .token.selector,
+.markdown-content .token.attr-name,
+.markdown-content .token.string,
+.markdown-content .token.char,
+.markdown-content .token.builtin {
+  color: #22863a;
+}
+
+.markdown-content .token.operator,
+.markdown-content .token.entity,
+.markdown-content .token.url,
+.markdown-content .language-css .token.string,
+.markdown-content .style .token.string {
+  color: #d73a49;
+}
+
+.markdown-content .token.atrule,
+.markdown-content .token.attr-value,
+.markdown-content .token.keyword {
+  color: #d73a49;
+}
+
+.markdown-content .token.function,
+.markdown-content .token.class-name {
+  color: #6f42c1;
+}
+
+.markdown-content .token.regex,
+.markdown-content .token.important,
+.markdown-content .token.variable {
+  color: #e36209;
+}
+
+/* Dark mode overrides */
+.dark .markdown-content .token.property,
+.dark .markdown-content .token.tag,
+.dark .markdown-content .token.boolean,
+.dark .markdown-content .token.number,
+.dark .markdown-content .token.constant,
+.dark .markdown-content .token.symbol {
+  color: #79b8ff;
+}
+
+.dark .markdown-content .token.selector,
+.dark .markdown-content .token.attr-name,
+.dark .markdown-content .token.string,
+.dark .markdown-content .token.char,
+.dark .markdown-content .token.builtin {
+  color: #85e89d;
+}
+
+.dark .markdown-content .token.operator,
+.dark .markdown-content .token.entity,
+.dark .markdown-content .token.url,
+.dark .markdown-content .language-css .token.string,
+.dark .markdown-content .style .token.string {
+  color: #f97583;
+}
+
+.dark .markdown-content .token.atrule,
+.dark .markdown-content .token.attr-value,
+.dark .markdown-content .token.keyword {
+  color: #f97583;
+}
+
+.dark .markdown-content .token.function,
+.dark .markdown-content .token.class-name {
+  color: #b392f0;
+}
