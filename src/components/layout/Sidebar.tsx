@@ -62,18 +62,21 @@ export default function Sidebar() {
         )}
       >
         {/* Logo & Toggle */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-border">
+        <div className={cn(
+          'flex h-16 items-center border-b border-border',
+          sidebarOpen ? 'justify-between px-4' : 'flex-col justify-center gap-1 py-2'
+        )}>
           {sidebarOpen ? (
             <Link to="/" className="flex items-center gap-2.5 group">
               <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
                 <FileText className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="font-semibold text-foreground">TechDocs AI</span>
+              <span className="font-semibold text-foreground">Omni Docs</span>
             </Link>
           ) : (
             <Link to="/" className="group">
-              <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                <FileText className="h-5 w-5 text-primary-foreground" />
+              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                <FileText className="h-4 w-4 text-primary-foreground" />
               </div>
             </Link>
           )}
@@ -82,12 +85,12 @@ export default function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={toggleSidebar}
-            className={cn('h-8 w-8 rounded-lg', !sidebarOpen && 'hidden md:flex mt-2')}
+            className={cn('h-7 w-7 rounded-lg', !sidebarOpen && 'hidden md:flex')}
           >
             {sidebarOpen ? (
               <PanelLeftClose className="h-4 w-4" />
             ) : (
-              <PanelLeft className="h-4 w-4" />
+              <PanelLeft className="h-3.5 w-3.5" />
             )}
           </Button>
         </div>

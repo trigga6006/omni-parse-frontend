@@ -9,7 +9,7 @@ export default function SignUpPage() {
         <div className="mb-4 h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
           <FileText className="h-7 w-7 text-primary-foreground" />
         </div>
-        <h1 className="text-2xl font-bold text-foreground">TechDocs AI</h1>
+        <h1 className="text-2xl font-bold text-foreground">Omni Docs</h1>
         <p className="text-sm text-muted-foreground mt-1">Create your account</p>
       </div>
 

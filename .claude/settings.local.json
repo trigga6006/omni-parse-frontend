@@ -4,7 +4,11 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Complete TechDocs AI frontend MVP with React/TypeScript\n\n- React 18 + Vite + TypeScript setup with Tailwind CSS\n- Clerk authentication integration\n- Zustand state management for chat, documents, and UI\n- Framer Motion animations throughout\n- Full API integration with /api/v1 endpoints\n\nComponents:\n- UI primitives \\(Button, Input, Card, Badge, Modal, etc.\\)\n- Chat interface with streaming responses and source citations\n- Document management with upload, list, and status tracking\n- Billing page with Stripe checkout integration\n- Settings and onboarding pages\n\nFeatures:\n- Dark mode first with light/dark toggle\n- Responsive sidebar navigation\n- Markdown rendering with syntax highlighting\n- Real-time document processing status polling\n- Session-based conversation continuity\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(npx vite build)"
     ]
   }
 }

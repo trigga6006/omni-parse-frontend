@@ -1,4 +1,4 @@
-export const APP_NAME = 'TechDocs AI';
+export const APP_NAME = 'Omni Docs';
 
 export const DOCUMENT_STATUS = {
   PENDING: 'pending',

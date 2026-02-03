@@ -144,7 +144,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
           className={cn(
             'flex items-end gap-3 rounded-2xl border border-border',
             'bg-secondary/30 p-3 transition-all duration-200',
-            'focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10 focus-within:bg-secondary/50',
+            'focus-within:border-primary/40 focus-within:bg-secondary/50',
             'shadow-sm hover:shadow-md'
           )}
         >
@@ -159,7 +159,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             className={cn(
               'flex-1 resize-none bg-transparent px-1 py-1.5',
               'text-sm text-foreground placeholder:text-muted-foreground',
-              'focus:outline-none disabled:opacity-50',
+              'focus:outline-none focus:ring-0 disabled:opacity-50',
               'max-h-[200px] leading-relaxed'
             )}
           />
@@ -181,7 +181,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
 
       {/* Disclaimer */}
       <p className="text-center text-xs text-muted-foreground/70">
-        TechDocs AI can make mistakes. Verify important information.
+        Omni Docs can make mistakes. Verify important information.
       </p>
     </div>
   );

@@ -9,7 +9,7 @@ import { cn } from '@/utils/cn';
 const steps = [
   {
     icon: FileText,
-    title: 'Welcome to TechDocs AI',
+    title: 'Welcome to Omni Docs',
     description:
       'Your AI-powered assistant for technical documentation. Ask questions about your manuals and get instant, accurate answers with source citations.',
   },

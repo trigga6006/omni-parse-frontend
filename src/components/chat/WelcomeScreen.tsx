@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
-import { FileText, Search, Zap, MessageSquare, ArrowRight, type LucideIcon } from 'lucide-react';
+import { FileText, Search, Zap, MessageSquare, type LucideIcon } from 'lucide-react';
 
 const suggestions = [
   'How do I replace the brake pads?',
-  "What's the torque spec for the cylinder head bolts?",
+  'Torque spec for cylinder head bolts?',
   'Explain the fuel injection system',
-  'What tools do I need for a timing belt replacement?',
 ];
 
 interface WelcomeScreenProps {
@@ -26,12 +25,12 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-          className="mb-8 flex justify-center"
+          className="mb-6 flex justify-center"
         >
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl" />
-            <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
-              <FileText className="h-10 w-10" />
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
+              <FileText className="h-8 w-8" />
             </div>
           </div>
         </motion.div>
@@ -41,17 +40,17 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-3 text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
+          className="mb-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
         >
-          Welcome to TechDocs AI
+          Welcome to Omni Docs
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mb-10 text-base sm:text-lg text-muted-foreground max-w-md mx-auto"
+          className="mb-8 text-sm sm:text-base text-muted-foreground max-w-md mx-auto"
         >
-          Your AI assistant for technical documentation. Ask questions, get instant answers.
+          Your AI assistant for technical documentation
         </motion.p>
 
         {/* Feature Cards */}
@@ -59,50 +58,44 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mb-10 grid grid-cols-1 sm:grid-cols-3 gap-4"
+          className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3"
         >
           <FeatureCard
             icon={Search}
             title="Smart Search"
-            description="Find answers across all your documents instantly"
+            description="Find answers instantly"
           />
           <FeatureCard
             icon={Zap}
             title="Fast & Accurate"
-            description="Powered by advanced AI for precise results"
+            description="AI-powered results"
           />
           <FeatureCard
             icon={MessageSquare}
-            title="Natural Conversation"
-            description="Ask follow-up questions naturally"
+            title="Conversational"
+            description="Natural follow-ups"
           />
         </motion.div>
 
-        {/* Suggestions */}
+        {/* Suggestions - Compact */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="space-y-4"
+          className="flex flex-wrap justify-center gap-2"
         >
-          <p className="text-sm font-medium text-muted-foreground">Try asking:</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {suggestions.map((suggestion, index) => (
-              <motion.button
-                key={suggestion}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onSendMessage(suggestion)}
-                className="group flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-2.5 text-sm text-foreground hover:bg-secondary hover:border-primary/30 hover:shadow-sm transition-all duration-200"
-              >
-                <span>{suggestion}</span>
-                <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-              </motion.button>
-            ))}
-          </div>
+          {suggestions.map((suggestion, index) => (
+            <motion.button
+              key={suggestion}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 + index * 0.05 }}
+              onClick={() => onSendMessage(suggestion)}
+              className="rounded-lg border border-border bg-secondary/40 px-3 py-1.5 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground hover:border-primary/30 transition-all"
+            >
+              {suggestion}
+            </motion.button>
+          ))}
         </motion.div>
       </motion.div>
     </div>
@@ -117,12 +110,12 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
   return (
-    <div className="group rounded-xl border border-border bg-secondary/30 p-5 text-left hover:bg-secondary/50 hover:border-primary/20 transition-all duration-200">
-      <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
-        <Icon className="h-5 w-5" />
+    <div className="group rounded-lg border border-border bg-secondary/30 p-4 text-left hover:bg-secondary/50 transition-all">
+      <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <Icon className="h-4 w-4" />
       </div>
-      <h3 className="mb-1.5 font-semibold text-foreground">{title}</h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+      <h3 className="mb-0.5 text-sm font-semibold text-foreground">{title}</h3>
+      <p className="text-xs text-muted-foreground">{description}</p>
     </div>
   );
 }
