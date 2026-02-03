@@ -48,7 +48,7 @@ export default function DocumentCard({
         <p className="font-medium truncate">{document.filename}</p>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span>{formatRelative(document.created_at)}</span>
-          {document.page_count && <span>{document.page_count} pages</span>}
+          {document.chunk_count > 0 && <span>{document.chunk_count} chunks</span>}
         </div>
       </div>
 

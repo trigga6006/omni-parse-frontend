@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import useChatStore from '@/stores/chatStore';
 import { streamQuery, extractSources, extractText } from '@/services/streaming';
 import api from '@/services/api';
-import type { Source } from '@/types';
 
 export function useChat() {
   const { getToken } = useAuth();
@@ -66,7 +65,6 @@ export function useChat() {
         const docIds = selectedDocuments.length > 0 ? selectedDocuments : undefined;
 
         let fullContent = '';
-        let receivedSources: Source[] = [];
 
         for await (const chunk of streamQuery(token, {
           query: question,
@@ -76,7 +74,6 @@ export function useChat() {
           // Handle sources
           const chunkSources = extractSources(chunk);
           if (chunkSources) {
-            receivedSources = chunkSources;
             setSources(chunkSources);
           }
 

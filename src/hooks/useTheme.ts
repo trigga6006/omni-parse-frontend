@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from 'react';
 import useUIStore from '@/stores/uiStore';
-import type { Theme } from '@/types';
 
 export function useTheme() {
   const { theme, setTheme, toggleTheme } = useUIStore();
