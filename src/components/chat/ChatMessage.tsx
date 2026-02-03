@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Bot, Copy, Check } from 'lucide-react';
+import { User, Copy, Check, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -27,32 +27,37 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
       className={cn('mb-6 flex gap-4', isUser && 'flex-row-reverse')}
     >
+      {/* Avatar */}
       <div
         className={cn(
-          'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full',
-          isUser ? 'bg-primary' : 'bg-secondary border border-border'
+          'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl shadow-sm',
+          isUser
+            ? 'bg-gradient-to-br from-primary to-primary/80'
+            : 'bg-secondary border border-border'
         )}
       >
         {isUser ? (
           <User className="h-4 w-4 text-primary-foreground" />
         ) : (
-          <Bot className="h-4 w-4 text-foreground" />
+          <Sparkles className="h-4 w-4 text-primary" />
         )}
       </div>
 
-      <div className={cn('flex-1 space-y-2', isUser && 'text-right')}>
+      {/* Message Content */}
+      <div className={cn('flex-1 space-y-2 max-w-[85%]', isUser && 'text-right')}>
         <div
           className={cn(
             'inline-block rounded-2xl px-4 py-3',
             isUser
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary/50 border border-border'
+              ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-sm'
+              : 'bg-secondary/60 border border-border shadow-sm'
           )}
         >
           {isUser ? (
-            <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+            <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
           ) : (
             <div className={cn('markdown-content text-sm', isStreaming && 'streaming-cursor')}>
               <ReactMarkdown
@@ -63,7 +68,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
                       {...props}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline"
+                      className="text-primary hover:underline font-medium"
                     />
                   ),
                   code: ({ className, children, ...props }) => {
@@ -71,7 +76,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
                     if (isInline) {
                       return (
                         <code
-                          className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono"
+                          className="bg-muted/80 px-1.5 py-0.5 rounded text-xs font-mono text-foreground"
                           {...props}
                         >
                           {children}
@@ -79,7 +84,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
                       );
                     }
                     return (
-                      <pre className="bg-muted rounded-lg p-4 overflow-x-auto my-3">
+                      <pre className="bg-muted/80 rounded-xl p-4 overflow-x-auto my-3 border border-border/50">
                         <code className="text-xs font-mono" {...props}>
                           {children}
                         </code>
@@ -87,18 +92,30 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
                     );
                   },
                   table: ({ ...props }) => (
-                    <div className="overflow-x-auto my-3">
+                    <div className="overflow-x-auto my-3 rounded-lg border border-border">
                       <table className="min-w-full border-collapse text-sm" {...props} />
                     </div>
                   ),
                   th: ({ ...props }) => (
                     <th
-                      className="border border-border bg-muted px-3 py-2 text-left font-medium"
+                      className="border-b border-border bg-muted/50 px-3 py-2 text-left font-medium"
                       {...props}
                     />
                   ),
                   td: ({ ...props }) => (
-                    <td className="border border-border px-3 py-2" {...props} />
+                    <td className="border-b border-border/50 px-3 py-2" {...props} />
+                  ),
+                  ul: ({ ...props }) => (
+                    <ul className="list-disc pl-4 space-y-1 my-2" {...props} />
+                  ),
+                  ol: ({ ...props }) => (
+                    <ol className="list-decimal pl-4 space-y-1 my-2" {...props} />
+                  ),
+                  li: ({ ...props }) => (
+                    <li className="leading-relaxed" {...props} />
+                  ),
+                  p: ({ ...props }) => (
+                    <p className="leading-relaxed mb-3 last:mb-0" {...props} />
                   ),
                 }}
               >
@@ -108,22 +125,28 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
           )}
         </div>
 
+        {/* Actions */}
         {!isUser && !isStreaming && message.content && (
-          <div className="flex items-center gap-1">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-1"
+          >
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCopy}
-              className="h-7 px-2 text-xs text-muted-foreground"
+              className="h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground rounded-lg"
             >
               {copied ? (
-                <Check className="h-3 w-3 mr-1" />
+                <Check className="h-3 w-3 mr-1.5 text-green-500" />
               ) : (
-                <Copy className="h-3 w-3 mr-1" />
+                <Copy className="h-3 w-3 mr-1.5" />
               )}
-              {copied ? 'Copied' : 'Copy'}
+              {copied ? 'Copied!' : 'Copy'}
             </Button>
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.div>

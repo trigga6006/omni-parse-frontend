@@ -7,6 +7,7 @@ import SourcePanel from './SourceList';
 import ThinkingIndicator from './ThinkingIndicator';
 import useChat from '@/hooks/useChat';
 import useUIStore from '@/stores/uiStore';
+import { cn } from '@/utils/cn';
 
 export default function ChatContainer() {
   const { messages, isStreaming, sources, sendMessage } = useChat();
@@ -26,13 +27,16 @@ export default function ChatContainer() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex h-full">
-      <div className="flex flex-1 flex-col">
+    <div className="flex h-full w-full">
+      <div className={cn(
+        'flex flex-1 flex-col h-full transition-all duration-300',
+        sourcePanelOpen ? 'lg:pr-80' : ''
+      )}>
         <div className="flex-1 overflow-y-auto scrollbar-thin">
           {isEmpty ? (
             <WelcomeScreen onSendMessage={sendMessage} />
           ) : (
-            <div className="mx-auto max-w-3xl px-4 py-8">
+            <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
               <AnimatePresence mode="popLayout">
                 {messages.map((message) => (
                   <ChatMessage
@@ -47,13 +51,13 @@ export default function ChatContainer() {
                 <ThinkingIndicator />
               )}
 
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} className="h-4" />
             </div>
           )}
         </div>
 
-        <div className="border-t border-border bg-background p-4">
-          <div className="mx-auto max-w-3xl">
+        <div className="sticky bottom-0 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 p-4 sm:p-6">
+          <div className="w-full max-w-3xl mx-auto">
             <ChatInput onSendMessage={sendMessage} disabled={isStreaming} />
           </div>
         </div>

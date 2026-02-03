@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Bot, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function ThinkingIndicator() {
   return (
@@ -8,22 +8,30 @@ export default function ThinkingIndicator() {
       animate={{ opacity: 1, y: 0 }}
       className="mb-6 flex gap-4"
     >
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-secondary border border-border">
-        <Bot className="h-4 w-4 text-foreground" />
+      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-secondary border border-border shadow-sm">
+        <Sparkles className="h-4 w-4 text-primary" />
       </div>
 
-      <div className="flex items-center gap-3 rounded-2xl bg-secondary/50 border border-border px-4 py-3">
-        <Sparkles className="h-4 w-4 text-primary animate-pulse-subtle" />
-        <div className="flex items-center gap-1">
-          <span className="text-sm text-muted-foreground">Thinking</span>
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="text-muted-foreground"
-          >
-            ...
-          </motion.span>
+      <div className="flex items-center gap-3 rounded-2xl bg-secondary/60 border border-border px-4 py-3 shadow-sm">
+        <div className="flex gap-1">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="h-2 w-2 rounded-full bg-primary"
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.5, 1, 0.5]
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay: i * 0.2,
+                ease: 'easeInOut'
+              }}
+            />
+          ))}
         </div>
+        <span className="text-sm text-muted-foreground">Thinking</span>
       </div>
     </motion.div>
   );

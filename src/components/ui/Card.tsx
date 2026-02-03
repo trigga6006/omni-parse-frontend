@@ -9,8 +9,9 @@ export function Card({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-xl border border-border bg-secondary/50 p-4',
-        'transition-colors duration-200',
+        'rounded-xl border border-border bg-secondary/30',
+        'shadow-sm hover:shadow-md',
+        'transition-all duration-200',
         className
       )}
       {...props}
@@ -26,7 +27,11 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ className, children }: CardHeaderProps) {
-  return <div className={cn('mb-3', className)}>{children}</div>;
+  return (
+    <div className={cn('px-5 py-4 border-b border-border/50', className)}>
+      {children}
+    </div>
+  );
 }
 
 interface CardTitleProps {
@@ -35,7 +40,11 @@ interface CardTitleProps {
 }
 
 export function CardTitle({ className, children }: CardTitleProps) {
-  return <h3 className={cn('text-lg font-semibold', className)}>{children}</h3>;
+  return (
+    <h3 className={cn('text-base font-semibold text-foreground', className)}>
+      {children}
+    </h3>
+  );
 }
 
 interface CardContentProps {
@@ -45,7 +54,7 @@ interface CardContentProps {
 
 export function CardContent({ className, children }: CardContentProps) {
   return (
-    <div className={cn('text-sm text-muted-foreground', className)}>
+    <div className={cn('px-5 py-4 text-sm', className)}>
       {children}
     </div>
   );

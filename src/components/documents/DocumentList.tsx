@@ -1,10 +1,8 @@
-import { FileText, Trash2, MoreVertical } from 'lucide-react';
+import { FileText, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
+import DocumentCard from './DocumentCard';
 import Button from '@/components/ui/Button';
-import Badge from '@/components/ui/Badge';
-import { Dropdown, DropdownItem } from '@/components/ui/Dropdown';
-import { formatRelative } from '@/utils/format';
-import { cn } from '@/utils/cn';
+import useUIStore from '@/stores/uiStore';
 import type { Document } from '@/types';
 
 interface DocumentListProps {
@@ -18,13 +16,15 @@ export default function DocumentList({
   isLoading,
   onDelete,
 }: DocumentListProps) {
+  const { setUploadModalOpen } = useUIStore();
+
   if (isLoading) {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-20 animate-pulse rounded-lg bg-secondary/50"
+            className="h-20 animate-pulse rounded-xl bg-secondary/50"
           />
         ))}
       </div>
@@ -33,13 +33,23 @@ export default function DocumentList({
 
   if (documents.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <FileText className="h-12 w-12 text-muted-foreground/30 mb-4" />
-        <h3 className="text-lg font-medium mb-2">No documents yet</h3>
-        <p className="text-sm text-muted-foreground">
-          Upload a PDF to get started
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center justify-center py-16 px-4 text-center rounded-2xl border-2 border-dashed border-border bg-secondary/20"
+      >
+        <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+          <FileText className="h-8 w-8 text-primary/50" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground mb-2">No documents yet</h3>
+        <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+          Upload your first technical document to start asking questions
         </p>
-      </div>
+        <Button onClick={() => setUploadModalOpen(true)} className="rounded-xl">
+          <Upload className="h-4 w-4 mr-2" />
+          Upload Document
+        </Button>
+      </motion.div>
     );
   }
 
@@ -54,66 +64,5 @@ export default function DocumentList({
         />
       ))}
     </div>
-  );
-}
-
-interface DocumentCardProps {
-  document: Document;
-  index: number;
-  onDelete: () => void;
-}
-
-function DocumentCard({ document, index, onDelete }: DocumentCardProps) {
-  const statusColors = {
-    pending: 'warning',
-    processing: 'default',
-    completed: 'success',
-    failed: 'error',
-  } as const;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      className={cn(
-        'flex items-center gap-4 p-4 rounded-lg',
-        'border border-border bg-secondary/30',
-        'hover:bg-secondary/50 transition-colors'
-      )}
-    >
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <FileText className="h-5 w-5" />
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <p className="font-medium truncate">{document.filename}</p>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>{formatRelative(document.created_at)}</span>
-          {document.chunk_count > 0 && <span>{document.chunk_count} chunks</span>}
-        </div>
-      </div>
-
-      <Badge variant={statusColors[document.status]}>
-        {document.status}
-      </Badge>
-
-      <Dropdown
-        trigger={
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        }
-        align="right"
-      >
-        <DropdownItem
-          onClick={onDelete}
-          className="text-red-500 hover:text-red-600"
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete
-        </DropdownItem>
-      </Dropdown>
-    </motion.div>
   );
 }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FileText, Search, Zap, MessageSquare, type LucideIcon } from 'lucide-react';
+import { FileText, Search, Zap, MessageSquare, ArrowRight, type LucideIcon } from 'lucide-react';
 
 const suggestions = [
   'How do I replace the brake pads?',
@@ -14,24 +14,53 @@ interface WelcomeScreenProps {
 
 export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
   return (
-    <div className="flex h-full flex-col items-center justify-center px-4">
+    <div className="flex h-full w-full flex-col items-center justify-center px-4 py-8 sm:py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-2xl text-center"
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-2xl text-center"
       >
-        <div className="mb-6 flex justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <FileText className="h-8 w-8" />
+        {/* Logo */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+          className="mb-8 flex justify-center"
+        >
+          <div className="relative">
+            <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl" />
+            <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
+              <FileText className="h-10 w-10" />
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        <h1 className="mb-2 text-3xl font-semibold tracking-tight">TechDocs AI</h1>
-        <p className="mb-8 text-lg text-muted-foreground">
-          Your AI assistant for technical documentation
-        </p>
+        {/* Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-3 text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
+        >
+          Welcome to TechDocs AI
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-10 text-base sm:text-lg text-muted-foreground max-w-md mx-auto"
+        >
+          Your AI assistant for technical documentation. Ask questions, get instant answers.
+        </motion.p>
 
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+        {/* Feature Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-10 grid grid-cols-1 sm:grid-cols-3 gap-4"
+        >
           <FeatureCard
             icon={Search}
             title="Smart Search"
@@ -47,26 +76,34 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
             title="Natural Conversation"
             description="Ask follow-up questions naturally"
           />
-        </div>
+        </motion.div>
 
-        <div className="space-y-3">
-          <p className="text-sm text-muted-foreground">Try asking:</p>
+        {/* Suggestions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="space-y-4"
+        >
+          <p className="text-sm font-medium text-muted-foreground">Try asking:</p>
           <div className="flex flex-wrap justify-center gap-2">
             {suggestions.map((suggestion, index) => (
               <motion.button
                 key={suggestion}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => onSendMessage(suggestion)}
-                className="rounded-full border border-border bg-secondary/50 px-4 py-2 text-sm
-                           hover:bg-secondary hover:border-primary/50 transition-colors"
+                className="group flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-2.5 text-sm text-foreground hover:bg-secondary hover:border-primary/30 hover:shadow-sm transition-all duration-200"
               >
-                {suggestion}
+                <span>{suggestion}</span>
+                <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
               </motion.button>
             ))}
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -80,10 +117,12 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-secondary/30 p-4">
-      <Icon className="mb-2 h-5 w-5 text-primary" />
-      <h3 className="mb-1 font-medium">{title}</h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+    <div className="group rounded-xl border border-border bg-secondary/30 p-5 text-left hover:bg-secondary/50 hover:border-primary/20 transition-all duration-200">
+      <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
+        <Icon className="h-5 w-5" />
+      </div>
+      <h3 className="mb-1.5 font-semibold text-foreground">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
     </div>
   );
 }
