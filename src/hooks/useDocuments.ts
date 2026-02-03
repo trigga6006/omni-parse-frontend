@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { toast } from 'sonner';
 import useDocumentStore from '@/stores/documentStore';
@@ -7,6 +7,9 @@ import type { Document } from '@/types';
 
 export function useDocuments() {
   const { getToken } = useAuth();
+  const getTokenRef = useRef(getToken);
+  getTokenRef.current = getToken;
+
   const {
     documents,
     isLoading,
@@ -23,10 +26,11 @@ export function useDocuments() {
   const fetchDocuments = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-      const token = await getToken();
+      const token = await getTokenRef.current();
       api.setToken(token);
       const response = await api.listDocuments();
       setDocuments(response.documents);
+      setError(null);
     } catch (error) {
       console.error('Failed to fetch documents:', error);
       setError(error instanceof Error ? error.message : 'Failed to load documents');
@@ -34,12 +38,12 @@ export function useDocuments() {
     } finally {
       setLoading(false);
     }
-  }, [getToken, setDocuments, setLoading, setError]);
+  }, [setDocuments, setLoading, setError]);
 
   const uploadDocument = useCallback(
     async (file: File, title?: string, description?: string): Promise<void> => {
       try {
-        const token = await getToken();
+        const token = await getTokenRef.current();
         api.setToken(token);
         const response = await api.uploadDocument(file, title, description);
 
@@ -69,19 +73,21 @@ export function useDocuments() {
         throw error;
       }
     },
-    [getToken, addDocument]
+    [addDocument]
   );
 
   const pollDocumentStatus = useCallback(
     async (documentId: string): Promise<void> => {
       const maxAttempts = 60;
       let attempts = 0;
+      let consecutiveErrors = 0;
 
       const poll = async (): Promise<void> => {
         try {
-          const token = await getToken();
+          const token = await getTokenRef.current();
           api.setToken(token);
           const doc = await api.getDocument(documentId);
+          consecutiveErrors = 0;
 
           updateDocument(documentId, {
             status: doc.status,
@@ -101,22 +107,36 @@ export function useDocuments() {
 
           attempts++;
           if (attempts < maxAttempts) {
-            setTimeout(poll, 3000);
+            setTimeout(poll, 5000);
+          } else {
+            toast.error('Document processing timed out. Try refreshing later.');
           }
         } catch (error) {
           console.error('Status poll failed:', error);
+          consecutiveErrors++;
+
+          if (consecutiveErrors >= 3) {
+            toast.error('Lost connection to server. Refresh the page to check document status.');
+            return;
+          }
+
+          attempts++;
+          if (attempts < maxAttempts) {
+            const backoff = Math.min(5000 * Math.pow(2, consecutiveErrors - 1), 30000);
+            setTimeout(poll, backoff);
+          }
         }
       };
 
       setTimeout(poll, 2000);
     },
-    [getToken, updateDocument]
+    [updateDocument]
   );
 
   const deleteDocument = useCallback(
     async (documentId: string): Promise<void> => {
       try {
-        const token = await getToken();
+        const token = await getTokenRef.current();
         api.setToken(token);
         await api.deleteDocument(documentId);
         removeDocument(documentId);
@@ -127,13 +147,13 @@ export function useDocuments() {
         throw error;
       }
     },
-    [getToken, removeDocument]
+    [removeDocument]
   );
 
   const reprocessDocument = useCallback(
     async (documentId: string): Promise<void> => {
       try {
-        const token = await getToken();
+        const token = await getTokenRef.current();
         api.setToken(token);
         await api.reprocessDocument(documentId);
         updateDocument(documentId, { status: 'pending' });
@@ -145,12 +165,12 @@ export function useDocuments() {
         throw error;
       }
     },
-    [getToken, updateDocument, pollDocumentStatus]
+    [updateDocument, pollDocumentStatus]
   );
 
   useEffect(() => {
     fetchDocuments();
-  }, [fetchDocuments]);
+  }, []);
 
   return {
     documents,
